@@ -1,11 +1,13 @@
 import './App.css';
 import React from "react"
+
 const placeholderurl = "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg"
 const species = {
   Dog:"Dog",
   Cat:"Cat",
   Bird:"Bird"
 }
+
 class Pet{
   constructor(name, pictureurl, friendly, specie){
     this.name = name;
@@ -14,17 +16,27 @@ class Pet{
     this.specie = specie;
   }
 }
+
+// placeholder pets list
 var pets = [
   new Pet("Lucky", placeholderurl, true, species.Dog),
-  new Pet("Lucy",placeholderurl, false, species.Bird)
+  new Pet("Lucy",placeholderurl, false, species.Bird),
+  new Pet("Lacy",placeholderurl, false, species.Bird),
+  new Pet("Birdy",placeholderurl, false, species.Bird),
+  new Pet("Sparkle",placeholderurl, false, species.Bird)
 ]
+
 function App() {
+
+  // state for form inputs
   const [state,setState] = React.useState({
     petname : "",
     petpicture : "",
     species : undefined,
     friendly : undefined,
   });
+
+  // update state with updated inputs from event
   function handleUpdateInput(event){
     const value = event.target.type === "checkbox" ? event.target.checked : event.target.value;
     setState({
@@ -33,11 +45,8 @@ function App() {
     });
   }
   
+  // add pet to pets list
   function handleAddPet(){
-    if (state.petname === "" || state.petpicture === "" || state.species === undefined){
-      console.log("required field missing");
-      return;
-    }
     pets.push(
     new Pet(
       state.petname,
@@ -46,7 +55,9 @@ function App() {
       state.specie
     ));
   }
+
   return (
+    // generate html for App
     <div className="App">
       <header className="App-header">
       </header>
@@ -146,7 +157,7 @@ function App() {
           <button 
             id = "add" 
             name = "addpet"
-            onClick={handleAddPet}
+            onSubmit={handleAddPet}
           >
             Add Pet!
           </button>
@@ -157,17 +168,23 @@ function App() {
     </div>
   );
 }
+
 function PetList(){
+
+  // state for pets list
   const [state, setState] = React.useState({
     petlist:pets,
   });
-  function handleRemovePet(){
+
+  // update state on remove
+  function onRemovePet(){
     setState({
       ...state,
     })
   }
   return (
-    <ul name = "petlist">
+    // generate html for pets list
+    <ul id="pet-list" name="petlist">
       {
         state.petlist.map((pet) => {
           return (
@@ -181,7 +198,7 @@ function PetList(){
                 id = {"remove"+pet.name} 
                 name = "removepet"
                 type='button'
-                onClick={() => {pets.splice(pets.indexOf(pet)); console.log(pets); handleRemovePet()}}
+                onClick={() => {pets.splice(pets.indexOf(pet),1); console.log(pets); onRemovePet()}}
               >
                 Remove
               </button>
@@ -193,4 +210,5 @@ function PetList(){
     </ul>
   )
 }
+
 export default App;
