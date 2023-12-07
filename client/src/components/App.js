@@ -1,39 +1,21 @@
 import './App.css';
-import React from "react"
+import React from "react";
+import PetList from './List';
 
-const placeholderurl = "https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg"
 const species = {
   Dog:"Dog",
   Cat:"Cat",
   Bird:"Bird"
 }
 
-class Pet{
-  constructor(name, pictureurl, friendly, specie){
-    this.name = name;
-    this.pictureurl = pictureurl;
-    this.friendly = friendly;
-    this.specie = specie;
-  }
-}
-
-// placeholder pets list
-var pets = [
-  new Pet("Lucky", placeholderurl, true, species.Dog),
-  new Pet("Lucy",placeholderurl, false, species.Bird),
-  new Pet("Lacy",placeholderurl, false, species.Bird),
-  new Pet("Birdy",placeholderurl, false, species.Bird),
-  new Pet("Sparkle",placeholderurl, false, species.Bird)
-]
-
 function App() {
 
   // state for form inputs
   const [state,setState] = React.useState({
-    petname : "",
-    petpicture : "",
-    species : undefined,
-    friendly : undefined,
+    name : "",
+    pictureurl : "",
+    friendly : false,
+    specie : "",
   });
 
   // update state with updated inputs from event
@@ -47,14 +29,23 @@ function App() {
   
   // add pet to pets list
   function handleAddPet(){
-    pets.push(
-    new Pet(
-      state.petname,
-      state.petpicture,
-      state.friendly,
-      state.specie
-    ));
+    addPets();
   }
+  
+  // PUSH hooks
+  const addPets = () => {
+    const params = "name="+state.name+"&pictureurl="+state.pictureurl+"&friendly="+state.friendly+"&specie="+state.specie;
+    fetch("http://localhost:5000/pets",{
+      method:"POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params,
+    })
+    .then((response)=>response.text())
+    .then((message)=>console.log(message))
+    .catch((e)=>console.log(e))
+  };
 
   return (
     // generate html for App
@@ -73,10 +64,10 @@ function App() {
               <input 
                 type="text" 
                 id="pname" 
-                name="petname" 
+                name="name" 
                 required 
                 alt='Enter Pet Name' 
-                value={state.petname}
+                value={state.name}
                 onChange={handleUpdateInput}
               >
               </input>
@@ -88,26 +79,26 @@ function App() {
               <input
                 type="text" 
                 id="ppicture" 
-                name="petpicture" 
+                name="pictureurl" 
                 placeholder='Picture URL'
                 required 
                 alt='Enter Picture URL'
-                value={state.petpicture}
+                value={state.pictureurl}
                 onChange = {handleUpdateInput}
               >
               </input>
             </label>
           </span>
           <fieldset>
-            <legend htmlFor="species">Species*</legend>
+            <legend htmlFor="specie">Species*</legend>
                 <label htmlFor = "species1">
                   <input 
                     type="radio" 
                     id="species1" 
-                    name="species" 
+                    name="specie" 
                     value={species.Cat}
                     required
-                    checked={state.species === species.Cat}
+                    checked={state.specie === species.Cat}
                     onChange={handleUpdateInput}
                   >
                   </input>
@@ -118,10 +109,10 @@ function App() {
                 <input 
                   type="radio" 
                   id="species2" 
-                  name="species" 
+                  name="specie" 
                   value={species.Dog} 
                   required
-                  checked={state.species === species.Dog}
+                  checked={state.specie === species.Dog}
                   onChange={handleUpdateInput}
                 >
                 </input>
@@ -132,10 +123,10 @@ function App() {
                 <input 
                   type="radio" 
                   id="species3" 
-                  name="species" 
+                  name="specie" 
                   value={species.Bird}
                   required                
-                  checked={state.species === species.Bird}
+                  checked={state.specie === species.Bird}
                   onChange={handleUpdateInput}              
                 >
                 </input>
@@ -157,7 +148,7 @@ function App() {
           <button 
             id = "add" 
             name = "addpet"
-            onSubmit={handleAddPet}
+            onClick={handleAddPet}
           >
             Add Pet!
           </button>
@@ -167,48 +158,6 @@ function App() {
       </main>
     </div>
   );
-}
-
-function PetList(){
-
-  // state for pets list
-  const [state, setState] = React.useState({
-    petlist:pets,
-  });
-
-  // update state on remove
-  function onRemovePet(){
-    setState({
-      ...state,
-    })
-  }
-  return (
-    // generate html for pets list
-    <ul id="pet-list" name="petlist">
-      {
-        state.petlist.map((pet) => {
-          return (
-            <li key = {state.petlist.indexOf(pet)}>
-              <div className = "card" >
-              <p><b>{pet.name}</b></p>
-              <p><img src = {pet.pictureurl} alt={pet.name}></img></p>
-              <p>{pet.friendly === undefined ? "" : pet.friendly ?"Friendly!":"Not so friendly..."}</p>        
-              <p>species: {pet.specie}</p>
-              <button 
-                id = {"remove"+pet.name} 
-                name = "removepet"
-                type='button'
-                onClick={() => {pets.splice(pets.indexOf(pet),1); console.log(pets); onRemovePet()}}
-              >
-                Remove
-              </button>
-              </div>
-            </li>
-          )
-        })
-      }
-    </ul>
-  )
 }
 
 export default App;

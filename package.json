@@ -16,5 +16,8 @@
   "dependencies": {
     "concurrently": "^8.2.2",
     "tar": "^6.2.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
