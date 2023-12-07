@@ -34,16 +34,15 @@ function App() {
   
   // PUSH hooks
   const addPets = () => {
-    const params = "name="+state.name+"&pictureurl="+state.pictureurl+"&friendly="+state.friendly+"&specie="+state.specie;
     fetch("http://localhost:5000/pets",{
       method:"POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
-      body: params,
+      body: JSON.stringify(state),
     })
-    .then((response)=>response.text())
-    .then((message)=>console.log(message))
+    .then((response)=>response.json())
+    .then((data)=>console.log(data))
     .catch((e)=>console.log(e))
   };
 

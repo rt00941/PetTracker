@@ -14,12 +14,7 @@ const corsOptions ={
 app.use(cors(corsOptions)) 
 
 // set up body parser to get body from routes
-app.unsubscribe(bodyParser.json())
-app.use(
-    bodyParser.urlencoded({
-        extended: true,
-    })
-)
+app.use(bodyParser.json())
 
 // route handling from routes.js in routes folder
 const routes = require('./routes/routes.js')(app, fs);

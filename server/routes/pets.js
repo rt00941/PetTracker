@@ -7,7 +7,7 @@ const petRoutes = (app, fs) => {
     // helper for reading the file
     const readFile = (
         callback,
-        returnJson = false,
+        returnJson = true,
         filePath = dataPath,
         encoding = 'utf8'
       ) => {
@@ -15,7 +15,7 @@ const petRoutes = (app, fs) => {
           if (err) {
             throw err;
           }
-    
+          
           callback(returnJson ? JSON.parse(data) : data);
         });
       };
@@ -50,7 +50,7 @@ const petRoutes = (app, fs) => {
         // Could add some conditionals here to handle if data is in the format we want
         data["pets"].push(req.body);
         writeFile(JSON.stringify(data, null, 2), () => {
-          res.status(200).send('pet added');
+          res.status(200).send(data);
         });
       }, true);
     });

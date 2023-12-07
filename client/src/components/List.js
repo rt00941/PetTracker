@@ -50,10 +50,10 @@ function List(){
               <div className = "card" >
               <p><b>{pet.name}</b></p>
               <p><img src = {pet.pictureurl} alt={pet.name}></img></p>
-              <p>{pet.friendly === true || pet.friendly === "true" ? "Friendly!":"Not so friendly..."}</p>        
+              <p>{pet.friendly === true ? "Friendly!":"Not so friendly..."}</p>        
               <p>species: {pet.specie}</p>
               <button 
-                id = {"remove"+pet.name} 
+                id = {"remove pet number: "+state.pets.indexOf(pet)+" named: "+pet.name} 
                 name = "removepet"
                 type='button'
                 onClick={() => onRemovePet(state.pets.indexOf(pet))}
