@@ -4,9 +4,7 @@ import React from "react";
 function List(){
 
   // state for pets list
-  const [state, setState] = React.useState({
-    pets:[],
-  });
+  const [pets, setState] = React.useState();
 
 
   // update state on remove
@@ -43,20 +41,20 @@ function List(){
     // generate html for pets list
     <ul id="pet-list" name="petlist">
       {
-        state.pets?.map((pet) => {
-          
+        pets?.map((pet) => {
+        
           return (
-            <li key = {state.pets.indexOf(pet)}>
+            <li key = {pet.pet_id}>
               <div className = "card" >
               <p><b>{pet.name}</b></p>
               <p><img src = {pet.pictureurl} alt={pet.name}></img></p>
               <p>{pet.friendly === true ? "Friendly!":"Not so friendly..."}</p>        
               <p>species: {pet.specie}</p>
               <button 
-                id = {"remove pet number: "+state.pets.indexOf(pet)+" named: "+pet.name} 
+                id = {"remove pet number: "+pet.pet_id+" named: "+pet.name} 
                 name = "removepet"
                 type='button'
-                onClick={() => onRemovePet(state.pets.indexOf(pet))}
+                onClick={() => onRemovePet(pet.pet_id)}
               >
                 Remove
               </button>
