@@ -50,7 +50,7 @@ const petRoutes = (app, fs) => {
         // Could add some conditionals here to handle if data is in the format we want
         data["pets"].push(req.body);
         writeFile(JSON.stringify(data, null, 2), () => {
-          res.status(200).send(data);
+          res.status(200).send(req.body);
         });
       }, true);
     });
